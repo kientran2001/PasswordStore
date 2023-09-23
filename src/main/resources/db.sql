@@ -28,8 +28,9 @@ CREATE TABLE authorities
 CREATE TABLE accounts
 (
     id SERIAL PRIMARY KEY,
-    uID SERIAL,
-    username varchar(50) NOT NULL,
-    authority varchar(50) NOT NULL,
-    CONSTRAINT fk_uID FOREIGN KEY (id) REFERENCES users (id) ON DELETE CASCADE
+    uId SERIAL,
+    acc varchar(50) NOT NULL,
+    pass varchar(500) NOT NULL,
+    web varchar(500) NOT NULL,
+    CONSTRAINT fk_uId FOREIGN KEY (uId) REFERENCES users (id) ON DELETE CASCADE
 );

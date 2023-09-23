@@ -1,12 +1,12 @@
 package com.example.PasswordStore.repository;
 
-import com.example.PasswordStore.model.Customer;
+import com.example.PasswordStore.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface CustomerRepository extends CrudRepository<Customer, Integer> {
-    List<Customer> findByUsername(String username);
+public interface UserRepository extends CrudRepository<User, Integer> {
+    List<User> findByUsername(String username);
 }

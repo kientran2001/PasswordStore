@@ -1,8 +1,8 @@
 package com.example.PasswordStore.config;
 
 
-import com.example.PasswordStore.model.Customer;
-import com.example.PasswordStore.repository.CustomerRepository;
+import com.example.PasswordStore.model.User;
+import com.example.PasswordStore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
     @Autowired
-    private CustomerRepository customerRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -31,14 +31,14 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        List<Customer> customers = customerRepository.findByUsername(username);
+        List<User> users = userRepository.findByUsername(username);
 
-        if(CollectionUtils.isEmpty(customers)) {
-            throw new BadCredentialsException("No customer registered with this username = " + username);
+        if(CollectionUtils.isEmpty(users)) {
+            throw new BadCredentialsException("No user registered with this username = " + username);
         } else {
-            if(passwordEncoder.matches(password, customers.get(0).getPassword())) {
+            if(passwordEncoder.matches(password, users.get(0).getPassword())) {
                 List<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(customers.get(0).getRole()));
+                authorities.add(new SimpleGrantedAuthority(users.get(0).getRole()));
                 return new UsernamePasswordAuthenticationToken(username, password, authorities);
             } else {
                 throw new BadCredentialsException("Invalid password for username = " + username);

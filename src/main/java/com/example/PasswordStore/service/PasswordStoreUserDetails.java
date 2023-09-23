@@ -1,40 +1,38 @@
 package com.example.PasswordStore.service;
 
-import com.example.PasswordStore.model.Customer;
-import com.example.PasswordStore.repository.CustomerRepository;
+import com.example.PasswordStore.model.User;
+import com.example.PasswordStore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class RetailStoreUserDetails implements UserDetailsService {
+public class PasswordStoreUserDetails implements UserDetailsService {
     @Autowired
-    private CustomerRepository customerRepository;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        List<Customer> customers = customerRepository.findByUsername(username);
+        List<User> users = userRepository.findByUsername(username);
         String password = null;
         List<GrantedAuthority> authorities = null;
 
-        if(customers.isEmpty()) {
+        if(users.isEmpty()) {
             throw new UsernameNotFoundException("User details not found for username = " + username);
         }
 
-        username = customers.get(0).getUsername();
-        password = customers.get(0).getPassword();
+        username = users.get(0).getUsername();
+        password = users.get(0).getPassword();
         authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(customers.get(0).getRole()));
+        authorities.add(new SimpleGrantedAuthority(users.get(0).getRole()));
 
-        return new User(username, password, authorities);
+        return new org.springframework.security.core.userdetails.User(username, password, authorities);
     }
 }
